@@ -1,7 +1,14 @@
-
 import React from 'react';
-import type { NavLink, Service, AccordionItem, HowItWorksStep } from './types';
-import { AutomationIcon, IntegrationIcon, ReportingIcon, AnalysisIcon, DesignIcon, ExecutionIcon, SupportIcon } from './components/Icons';
+// 1. حذفنا استدعاء types غير الموجود
+// import type { NavLink, Service, AccordionItem, HowItWorksStep } from './types'; 
+// 2. عدلنا المسار ليأخذ الايقونات من نفس المجلد
+import { AutomationIcon, IntegrationIcon, ReportingIcon, AnalysisIcon, DesignIcon, ExecutionIcon, SupportIcon } from './Icons';
+
+// عرفنا الانواع هنا مباشرة لكي لا يطلب ملف خارجي
+type NavLink = { href: string; label: string; };
+type Service = { icon: React.ReactNode; title: string; description: string; };
+type AccordionItem = { question: string; answer: string; };
+type HowItWorksStep = { number: number; icon: React.ReactNode; title: string; description: string; };
 
 export const NAV_LINKS: NavLink[] = [
   { href: '#services', label: 'خدماتنا' },
