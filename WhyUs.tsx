@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { WHY_US_DATA } from '../constants';
+import { WHY_US_DATA } from './constants';
 import { ChevronDownIcon } from './Icons';
-import type { AccordionItem } from '../types';
+import type { AccordionItem } from './types';
 
 const Accordion: React.FC<{ item: AccordionItem }> = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
