@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { HOW_IT_WORKS_STEPS } from '../constants';
+import { HOW_IT_WORKS_STEPS } from './constants';
 
 const HowItWorks: React.FC = () => {
   return (
