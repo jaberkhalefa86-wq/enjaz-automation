@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import { NAV_LINKS } from '../constants';
+// Correct import: Use ./ instead of ../ because files are in the same folder
+import { NAV_LINKS } from './constants'; 
 import { MenuIcon, XIcon } from './Icons';
 
 const Header: React.FC = () => {
