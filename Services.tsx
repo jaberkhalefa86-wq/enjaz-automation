@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { SERVICES } from '../constants';
-import type { Service } from '../types';
+import { SERVICES } from './constants';
+import type { Service } from './types';
 
 const ServiceCard: React.FC<{ service: Service }> = ({ service }) => (
     <div className="bg-slate-800 p-8 rounded-xl shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
