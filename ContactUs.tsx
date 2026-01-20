@@ -47,7 +47,7 @@ const ContactUs: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="text-lg text-white font-semibold">رقم الهاتف</h4>
-                    <p className="text-slate-400" dir="ltr">3567 9964</p>
+                    <p className="text-slate-400" dir="ltr">+96878358648</p>
                   </div>
                 </div>
                 <div className="flex items-center">
