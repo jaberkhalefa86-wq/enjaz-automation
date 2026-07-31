@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تحميل ورك فلو n8n مجاني لاستخراج بيانات صورة مستند مرسلة عبر Telegram وإضافتها تلقائيًا إلى Google Sheets.">
+    <meta name="keywords" content="n8n, Telegram, Google Sheets, OCR, أتمتة, استخراج بيانات الصور">
+    <meta property="og:title" content="ورك فلو مجاني: من صورة مستند إلى Google Sheets">
+    <meta property="og:description" content="أرسل صورة إلى بوت Telegram ليتم استخراج الحقول المطلوبة وإضافتها تلقائيًا إلى Google Sheets.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://enjazautomation.com/free-workflows/document-image-to-google-sheets.html">
+    <title>تحميل ورك فلو استخراج بيانات الصور | إنجاز للأتمتة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0a1628;
+            --secondary-dark: #122140;
+            --accent-blue: #00d4ff;
+            --accent-cyan: #32b8c6;
+            --text-white: #ffffff;
+            --text-gray: #b4c4d9;
+            --card-bg: rgba(18, 33, 64, 0.78);
+            --gradient: linear-gradient(90deg, #00d4ff 0%, #32b8c6 100%);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Cairo", sans-serif;
+            background:
+                radial-gradient(circle at 20% 0%, rgba(0,212,255,.13), transparent 32%),
+                linear-gradient(135deg, #0a1628 0%, #122140 55%, #173354 100%);
+            color: var(--text-white);
+            line-height: 1.9;
+            min-height: 100vh;
+        }
+        a { color: inherit; }
+        code {
+            direction: ltr; display: inline-block; padding: 1px 7px;
+            border-radius: 6px; background: rgba(0,0,0,.22); color: #e2e8f0;
+        }
+        .container { width: min(1100px, calc(100% - 32px)); margin: auto; }
+        header {
+            position: sticky; top: 0; z-index: 20;
+            background: rgba(10,22,40,.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,212,255,.15);
+        }
+        nav {
+            min-height: 76px; display: flex; align-items: center;
+            justify-content: space-between; gap: 20px;
+        }
+        .logo {
+            font-size: 1.45rem; font-weight: 800; text-decoration: none;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .back {
+            text-decoration: none; color: var(--text-gray);
+            font-weight: 700;
+        }
+        .back:hover { color: var(--accent-blue); }
+        main { padding: 70px 0; }
+        .hero { text-align: center; max-width: 900px; margin: auto; }
+        .badge {
+            display: inline-flex; padding: 7px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(74,222,128,.45);
+            color: #86efac; background: rgba(74,222,128,.09);
+            font-weight: 700; margin-bottom: 20px;
+        }
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            line-height: 1.35; margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .lead {
+            color: var(--text-gray); font-size: 1.15rem;
+            max-width: 780px; margin: 0 auto 32px;
+        }
+        .actions {
+            display: flex; justify-content: center; gap: 14px;
+            flex-wrap: wrap; margin-bottom: 48px;
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 56px; padding: 0 30px;
+            border-radius: 14px; text-decoration: none; font-weight: 800;
+            transition: .25s ease;
+        }
+        .btn-primary {
+            background: var(--gradient); color: var(--primary-dark);
+            box-shadow: 0 12px 32px rgba(0,212,255,.24);
+        }
+        .btn-primary:hover { transform: translateY(-3px); }
+        .btn-secondary {
+            border: 1px solid rgba(0,212,255,.4);
+            color: var(--text-white); background: rgba(18,33,64,.72);
+        }
+        .preview {
+            background: var(--card-bg);
+            padding: 14px; border-radius: 22px;
+            border: 1px solid rgba(0,212,255,.17);
+            box-shadow: 0 24px 70px rgba(0,0,0,.25);
+            margin-bottom: 55px;
+        }
+        .preview img {
+            display: block; width: 100%; height: auto;
+            border-radius: 13px;
+        }
+        .grid {
+            display: grid; grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 24px; margin-bottom: 30px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,.14);
+            border-radius: 20px; padding: 30px;
+        }
+        .card h2 { color: var(--accent-blue); margin-bottom: 15px; font-size: 1.45rem; }
+        .card ul, .card ol { padding-right: 22px; color: var(--text-gray); }
+        .card li { margin-bottom: 8px; }
+        .flow {
+            display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+            gap: 14px; margin: 25px 0 55px;
+        }
+        .step {
+            background: var(--card-bg); padding: 22px 14px; text-align: center;
+            border-radius: 16px; border: 1px solid rgba(0,212,255,.13);
+        }
+        .step b { display: block; color: var(--accent-blue); margin-top: 8px; }
+        .step span { color: var(--text-gray); font-size: .92rem; }
+        .note {
+            border-right: 4px solid #fbbf24;
+            background: rgba(251,191,36,.08);
+            color: #fde68a; padding: 18px 20px; border-radius: 12px;
+            margin-top: 24px;
+        }
+        .download-box {
+            text-align: center; margin-top: 35px; padding: 38px;
+            border-radius: 22px; background: rgba(18,33,64,.88);
+            border: 1px solid rgba(74,222,128,.28);
+        }
+        .download-box h2 { margin-bottom: 10px; }
+        .download-box p { color: var(--text-gray); margin-bottom: 22px; }
+        footer {
+            margin-top: 60px; padding: 30px 0; text-align: center;
+            color: var(--text-gray); border-top: 1px solid rgba(0,212,255,.12);
+        }
+        @media (max-width: 760px) {
+            .grid { grid-template-columns: 1fr; }
+            .flow { grid-template-columns: 1fr 1fr; }
+            main { padding-top: 45px; }
+            .card { padding: 24px; }
+        }
+        @media (max-width: 430px) {
+            .flow { grid-template-columns: 1fr; }
+            nav { min-height: 66px; }
+            .logo { font-size: 1.05rem; }
+            .back { font-size: .9rem; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <a class="logo" href="../index.html">إنجاز للأتمتة Enjaz Automation</a>
+            <a class="back" href="../index.html#workflows">← العودة إلى الموقع</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <section class="hero">
+            <span class="badge">ورك فلو مجاني 🎁</span>
+            <h1>استخرج بيانات صورة المستند إلى Google Sheets تلقائيًا</h1>
+            <p class="lead">
+                أرسل صورة المستند إلى بوت Telegram، وسيقرأها ورك فلو n8n،
+                ويستخرج الحقول المحددة ثم يضيفها في صف جديد داخل Google Sheets.
+            </p>
+            <div class="actions">
+                <a class="btn btn-primary" href="../downloads/telegram-document-to-google-sheets-n8n.zip" download>
+                    تحميل الملفات مجانًا
+                </a>
+                <a class="btn btn-secondary" href="#setup">قراءة خطوات التشغيل</a>
+            </div>
+        </section>
+
+        <div class="preview">
+            <img src="../assets/document-image-workflow-preview.png"
+                 alt="ورك فلو n8n لاستخراج بيانات صورة مستند من Telegram إلى Google Sheets">
+        </div>
+
+        <section class="flow" aria-label="مراحل عمل الورك فلو">
+            <div class="step">📷<b>إرسال الصورة</b><span>عبر بوت Telegram</span></div>
+            <div class="step">🔄<b>تحويل الملف</b><span>إلى Base64</span></div>
+            <div class="step">🤖<b>قراءة الحقول</b><span>باستخدام Groq</span></div>
+            <div class="step">📊<b>حفظ البيانات</b><span>داخل Google Sheets</span></div>
+        </section>
+
+        <section class="grid">
+            <article class="card">
+                <h2>محتويات ملف التحميل</h2>
+                <ul>
+                    <li>ملف ورك فلو n8n بصيغة JSON.</li>
+                    <li>قالب CSV جاهز بأسماء أعمدة Google Sheets.</li>
+                    <li>ملف تعليمات عربي خطوة بخطوة.</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <h2>الحقول المستخرجة حاليًا</h2>
+                <ul>
+                    <li>CRM Order Id</li>
+                    <li>Customer Name</li>
+                    <li>Contact Phone</li>
+                    <li>Internet Service No.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section id="setup" class="card">
+            <h2>خطوات التشغيل بعد التحميل</h2>
+            <ol>
+                <li>فك ضغط الملف، ثم استورد ملف JSON إلى n8n.</li>
+                <li>اربط عقدة Telegram Trigger بالبوت الخاص بك.</li>
+                <li>ضع مفتاح Groq في عقدة HTTP Request بدل <code>YOUR_GROQ_API_KEY</code>.</li>
+                <li>استورد قالب CSV إلى Google Sheets أو أنشئ الأعمدة الأربعة يدويًا.</li>
+                <li>اربط عقدة Google Sheets بحسابك واختر الجدول والورقة.</li>
+                <li>اختبر الورك فلو بإرسال صورة واضحة إلى البوت، ثم فعّله.</li>
+            </ol>
+
+            <div class="note">
+                الملف لا يحتوي على مفاتيح API أو بيانات دخول خاصة. ستحتاج إلى إضافة حساباتك
+                ومفتاح Groq بعد الاستيراد.
+            </div>
+        </section>
+
+        <section class="download-box">
+            <h2>جاهز للتجربة؟</h2>
+            <p>حمّل الحزمة الكاملة وابدأ إعداد الورك فلو على حسابك.</p>
+            <a class="btn btn-primary" href="../downloads/telegram-document-to-google-sheets-n8n.zip" download>
+                تحميل ملف الورك فلو
+            </a>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        © 2026 إنجاز للأتمتة — Enjaz Automation
+    </div>
+</footer>
+</body>
+</html>
