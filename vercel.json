@@ -4,6 +4,31 @@
       "source": "/index.html",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/services/n8n-annual-subscription/index.html",
+      "destination": "/services/n8n-annual-subscription/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
     }
   ]
 }
