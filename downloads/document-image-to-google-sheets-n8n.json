@@ -1,0 +1,285 @@
+{
+  "name": "استخراج بيانات صورة مستند إلى Google Sheets - نسخة مجانية",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        128
+      ],
+      "id": "578071c1-f99b-4aef-b403-3139f32d1df2",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"qwen/qwen3.6-27b\",\n  \"reasoning_effort\": \"none\",\n  \"reasoning_format\": \"hidden\",\n  \"temperature\": 0,\n  \"max_completion_tokens\": 300,\n  \"response_format\": {\n    \"type\": \"json_object\"\n  },\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"Carefully read the attached work order image.\\n\\nExtract ONLY the exact values written next to these four labels:\\n1. CRM Order Id\\n2. Customer Name\\n3. Contact Phone\\n4. Internet Service No.\\n\\nReturn ONLY one valid JSON object using exactly this structure:\\n{\\\"crm_order_id\\\":\\\"\\\",\\\"customer_name\\\":\\\"\\\",\\\"contact_phone\\\":\\\"\\\",\\\"internet_service_no\\\":\\\"\\\"}\\n\\nRules:\\n- Return every value as a string.\\n- Preserve all leading zeros.\\n- Do not change, translate, shorten, or explain the values.\\n- Do not extract VoIP Service No. instead of Internet Service No.\\n- If a value is unreadable, return an empty string for that field.\\n- Do not include markdown, reasoning, or additional text.\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"data:image/jpeg;base64,{{ $json.data }}\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        112,
+        -112
+      ],
+      "id": "d163a3c0-27b5-4716-a8e0-fcc0c32ae6f7",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst content = input?.choices?.[0]?.message?.content;\n\nif (!content) {\n  throw new Error(\n    \"لم يرجع Groq أي محتوى. الاستجابة الكاملة: \" +\n    JSON.stringify(input)\n  );\n}\n\nlet cleanedContent = String(content).trim();\n\n// حذف التفكير في حال ظهر رغم تعطيله\ncleanedContent = cleanedContent\n  .replace(/<think\\b[^>]*>[\\s\\S]*?<\\/think>/gi, \"\")\n  .replace(/```json/gi, \"\")\n  .replace(/```/g, \"\")\n  .trim();\n\nlet parsedData;\n\ntry {\n  // المحاولة الأولى: الاستجابة كلها JSON\n  parsedData = JSON.parse(cleanedContent);\n} catch (firstError) {\n  // المحاولة الثانية: استخراج كائن JSON من داخل النص\n  const firstBrace = cleanedContent.indexOf(\"{\");\n  const lastBrace = cleanedContent.lastIndexOf(\"}\");\n\n  if (firstBrace === -1 || lastBrace === -1) {\n    throw new Error(\n      \"لم يتم العثور على JSON في استجابة Groq:\\n\" +\n      cleanedContent\n    );\n  }\n\n  const jsonText = cleanedContent.slice(\n    firstBrace,\n    lastBrace + 1\n  );\n\n  try {\n    parsedData = JSON.parse(jsonText);\n  } catch (secondError) {\n    throw new Error(\n      \"Groq أعاد JSON غير صالح:\\n\" +\n      jsonText +\n      \"\\n\\nسبب الخطأ: \" +\n      secondError.message\n    );\n  }\n}\n\n// توحيد الحقول ومنع فقدان الصفر الأول في رقم الهاتف\nreturn [\n  {\n    json: {\n      crm_order_id: String(\n        parsedData.crm_order_id ?? \"\"\n      ).trim(),\n\n      customer_name: String(\n        parsedData.customer_name ?? \"\"\n      ).trim(),\n\n      contact_phone: String(\n        parsedData.contact_phone ?? \"\"\n      ).trim(),\n\n      internet_service_no: String(\n        parsedData.internet_service_no ?? \"\"\n      ).trim()\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        128
+      ],
+      "id": "1df709ad-f1c9-4de1-8f70-ba2018edc2ce",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "50df4c41-0b0d-40e1-ac42-e1ad1b23d65c",
+              "name": "crm_order_id",
+              "value": "={{ $json.crm_order_id }}",
+              "type": "string"
+            },
+            {
+              "id": "a42a1446-149c-4d24-ba0d-380368ae201e",
+              "name": "customer_name",
+              "value": "={{ $json.customer_name }}",
+              "type": "string"
+            },
+            {
+              "id": "0fff97d4-7a0d-4a1f-ac46-61e75cb9be1c",
+              "name": "contact_phone",
+              "value": "={{ $json.contact_phone }}",
+              "type": "string"
+            },
+            {
+              "id": "3e6232d6-5dad-41b0-85f8-849314324128",
+              "name": "internet_service_no",
+              "value": "={{ $json.internet_service_no }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        512,
+        -112
+      ],
+      "id": "7247cb9d-1646-47aa-acc2-c62ccacb4e73",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "crm_order_id": "={{ $json.crm_order_id }}",
+            "customer_name": "={{ $json.customer_name }}",
+            "contact_phone": "={{ $json.contact_phone }}",
+            "internet_service_no": "={{ $json.internet_service_no }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "crm_order_id",
+              "displayName": "crm_order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "customer_name",
+              "displayName": "customer_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "contact_phone",
+              "displayName": "contact_phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internet_service_no",
+              "displayName": "internet_service_no",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        704,
+        112
+      ],
+      "id": "62c845bd-4fa3-4610-b955-616fcc483a03",
+      "name": "Append row in sheet"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        32
+      ],
+      "id": "b5c891fb-a9e8-450f-8aab-2f5d758efbc1",
+      "name": "Telegram Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## خطوات التشغيل بعد الاستيراد\n\n1. افتح **Telegram Trigger** واربط حساب البوت الخاص بك.\n2. افتح **HTTP Request1** واستبدل `YOUR_GROQ_API_KEY` بمفتاح Groq الخاص بك.\n3. أنشئ Google Sheet بهذه الأعمدة:\n   - `crm_order_id`\n   - `customer_name`\n   - `contact_phone`\n   - `internet_service_no`\n4. افتح **Append row in sheet** واربط حساب Google ثم اختر ملف الشيت والورقة.\n5. اختبر الورك فلو بإرسال صورة واضحة إلى بوت Telegram.\n6. فعّل الورك فلو بعد نجاح الاختبار.\n\n> لا يحتوي هذا الملف على أي مفاتيح أو بيانات دخول خاصة.",
+        "height": 470,
+        "width": 620,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        -520
+      ],
+      "id": "c8b4679f-5885-4b96-9b6a-32d39f4f7e9d",
+      "name": "تعليمات التشغيل"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}
