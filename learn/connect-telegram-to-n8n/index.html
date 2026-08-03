@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="description" content="شرح ربط Telegram مع n8n خطوة بخطوة: إنشاء بوت عبر BotFather، إضافة Telegram Trigger، إدخال Access Token واختبار استقبال الرسائل.">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="كيفية ربط Telegram مع n8n خطوة بخطوة">
+    <meta property="og:description" content="دليل عربي عملي للمبتدئين لإنشاء بوت Telegram وربطه بمنصة n8n واختبار الاتصال.">
+    <meta property="og:url" content="https://www.enjazautomation.com/learn/connect-telegram-to-n8n/">
+    <meta property="og:image" content="https://www.enjazautomation.com/assets/document-image-workflow-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>كيفية ربط Telegram مع n8n خطوة بخطوة | إنجاز للأتمتة</title>
+    <link rel="canonical" href="https://www.enjazautomation.com/learn/connect-telegram-to-n8n/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root{--dark:#0a1628;--dark2:#122140;--blue:#00d4ff;--cyan:#32b8c6;--white:#fff;--gray:#b4c4d9;--card:rgba(18,33,64,.8);--grad:linear-gradient(90deg,#00d4ff,#32b8c6)}
+        *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:Cairo,sans-serif;background:radial-gradient(circle at 18% 0,rgba(0,212,255,.13),transparent 30%),linear-gradient(135deg,#0a1628,#122140 55%,#173354);color:var(--white);line-height:1.95;min-height:100vh}.container{width:min(1050px,calc(100% - 32px));margin:auto}header{position:sticky;top:0;z-index:20;background:rgba(10,22,40,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,212,255,.15)}nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{font-size:1.42rem;font-weight:800;text-decoration:none;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.nav{display:flex;gap:18px;flex-wrap:wrap}.nav a{color:var(--gray);text-decoration:none;font-weight:700}.nav a:hover{color:var(--blue)}main{padding:65px 0}.breadcrumbs{color:var(--gray);font-size:.92rem;margin-bottom:28px}.breadcrumbs a{color:var(--blue);text-decoration:none}.hero{text-align:center;max-width:900px;margin:auto}.badge{display:inline-flex;padding:7px 18px;border-radius:999px;border:1px solid rgba(74,222,128,.42);color:#86efac;background:rgba(74,222,128,.08);font-weight:700;margin-bottom:18px}h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.35;margin-bottom:18px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.lead{color:var(--gray);font-size:1.14rem;max-width:790px;margin:0 auto 28px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:48px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border-radius:13px;text-decoration:none;font-weight:800;transition:.25s}.primary{background:var(--grad);color:var(--dark);box-shadow:0 12px 30px rgba(0,212,255,.22)}.secondary{border:1px solid rgba(0,212,255,.38);color:var(--white);background:rgba(18,33,64,.65)}.btn:hover{transform:translateY(-2px)}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}.video-card{max-width:760px;margin:0 auto 34px;background:var(--card);border:1px solid rgba(0,212,255,.14);border-radius:20px;padding:18px}.video-card h2{text-align:center;color:var(--blue);font-size:1.35rem;margin-bottom:14px}.video-wrap{position:relative;aspect-ratio:9/16;max-width:390px;margin:auto;border-radius:16px;overflow:hidden;background:#000}.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.summary div{text-align:center;padding:18px;border-radius:15px;background:var(--card);border:1px solid rgba(0,212,255,.13)}.summary b{display:block;color:var(--blue)}.content{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:start}.article{min-width:0}.toc{position:sticky;top:96px;background:var(--card);border:1px solid rgba(0,212,255,.14);border-radius:18px;padding:22px}.toc h2{font-size:1.1rem;color:var(--blue);margin-bottom:12px}.toc a{display:block;color:var(--gray);text-decoration:none;padding:5px 0;font-size:.93rem}.toc a:hover{color:var(--blue)}.card{background:var(--card);border:1px solid rgba(0,212,255,.14);border-radius:20px;padding:30px;margin-bottom:24px}.card h2{font-size:1.6rem;color:var(--blue);margin-bottom:14px}.card h3{font-size:1.18rem;color:#8be9fb;margin:20px 0 8px}.card p,.card li{color:var(--gray)}.card ul,.card ol{padding-right:24px}.card li{margin-bottom:9px}.step{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07)}.step:last-child{border-bottom:0}.num{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--grad);color:var(--dark);font-weight:800}.step h3{margin:0 0 5px}.code{direction:ltr;display:inline-block;padding:2px 8px;border-radius:7px;background:rgba(0,0,0,.25);color:#e2e8f0;font-family:monospace}.note{border-right:4px solid #fbbf24;background:rgba(251,191,36,.08);color:#fde68a;padding:17px 19px;border-radius:12px;margin-top:16px}.success{border-right-color:#4ade80;background:rgba(74,222,128,.08);color:#bbf7d0}.workflow-box{background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(50,184,198,.05));border:1px solid rgba(0,212,255,.28)}.workflow-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}.workflow-flow div{text-align:center;padding:15px 8px;border-radius:13px;background:rgba(0,0,0,.18);color:var(--gray)}.workflow-flow b{display:block;color:var(--blue);margin-top:6px}.faq details{border-bottom:1px solid rgba(255,255,255,.08);padding:14px 0}.faq details:last-child{border-bottom:0}.faq summary{cursor:pointer;font-weight:700;color:var(--white)}.faq p{padding-top:8px}.cta{text-align:center;padding:38px}.cta h2{margin-bottom:8px}.cta p{margin-bottom:18px}footer{padding:30px 0;text-align:center;color:var(--gray);border-top:1px solid rgba(0,212,255,.12)}@media(max-width:820px){.content{grid-template-columns:1fr}.toc{position:static;order:-1}.summary,.workflow-flow{grid-template-columns:1fr 1fr}}@media(max-width:600px){nav{align-items:flex-start;padding:15px 0;flex-direction:column}.nav{gap:12px}.summary,.workflow-flow{grid-template-columns:1fr}.card{padding:23px}.step{grid-template-columns:40px 1fr}.num{width:40px;height:40px}}
+    </style>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"TechArticle","headline":"كيفية ربط Telegram مع n8n خطوة بخطوة","description":"دليل عربي عملي لإنشاء بوت Telegram وربطه بمنصة n8n واختبار استقبال الرسائل.","datePublished":"2026-08-03","dateModified":"2026-08-03","inLanguage":"ar","mainEntityOfPage":"https://www.enjazautomation.com/learn/connect-telegram-to-n8n/","author":{"@type":"Organization","name":"إنجاز للأتمتة","url":"https://www.enjazautomation.com/"},"publisher":{"@type":"Organization","name":"إنجاز للأتمتة","url":"https://www.enjazautomation.com/"}}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://www.enjazautomation.com/"},{"@type":"ListItem","position":2,"name":"دروس n8n","item":"https://www.enjazautomation.com/learn/"},{"@type":"ListItem","position":3,"name":"ربط Telegram مع n8n","item":"https://www.enjazautomation.com/learn/connect-telegram-to-n8n/"}]}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"ما العقدة المستخدمة لاستقبال رسائل Telegram في n8n؟","acceptedAnswer":{"@type":"Answer","text":"تُستخدم عقدة Telegram Trigger مع اختيار حدث استقبال الرسائل."}},{"@type":"Question","name":"هل أضع Access Token داخل أي كود؟","acceptedAnswer":{"@type":"Answer","text":"لا، يُضاف داخل بيانات اعتماد Telegram في n8n ولا يُنشر أو يُشارك مع الآخرين."}},{"@type":"Question","name":"هل يوجد Workflow عملي يعتمد على هذا الربط؟","acceptedAnswer":{"@type":"Answer","text":"نعم، توفر إنجاز للأتمتة Workflow مجانيًا يستقبل صورة مستند من Telegram ويستخرج الحقول ثم يضيفها إلى Google Sheets."}}]}
+    </script>
+</head>
+<body>
+<header><div class="container"><nav><a class="logo" href="/">إنجاز للأتمتة</a><div class="nav"><a href="/learn/">الدروس</a><a href="/#workflows">Workflows</a><a href="/services/n8n-annual-subscription/">اشتراك n8n</a></div></nav></div></header>
+<main><div class="container">
+    <div class="breadcrumbs"><a href="/">الرئيسية</a> ← <a href="/learn/">دروس n8n</a> ← ربط Telegram مع n8n</div>
+    <section class="hero">
+        <span class="badge">درس عملي للمبتدئين</span>
+        <h1>كيفية ربط Telegram مع n8n خطوة بخطوة</h1>
+        <p class="lead">ستنشئ بوتًا جديدًا عبر BotFather، تربطه بعقدة Telegram Trigger داخل n8n، ثم تختبر وصول أول رسالة بنجاح.</p>
+        <div class="actions">
+            <a class="btn primary" href="#steps">ابدأ خطوات الربط</a>
+            <a class="btn secondary" href="https://www.youtube.com/shorts/t9oLyqzN5A8" target="_blank" rel="noopener noreferrer">شاهد الشرح على يوتيوب</a>
+        </div>
+    </section>
+
+    <section class="summary" aria-label="ملخص الدرس"><div><b>المستوى</b>مبتدئ</div><div><b>الأدوات</b>Telegram + n8n</div><div><b>النتيجة</b>استقبال الرسائل داخل n8n</div></section>
+
+    <section class="video-card" aria-labelledby="video-title">
+        <h2 id="video-title">شاهد الشرح العملي المختصر</h2>
+        <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/t9oLyqzN5A8" title="كيفية ربط Telegram مع n8n" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <div class="content">
+        <article class="article">
+            <section class="card" id="before"><h2>قبل أن تبدأ</h2><ul><li>حساب Telegram يعمل.</li><li>حساب n8n أو نسخة مستضافة جاهزة.</li><li>لا تشارك Access Token الخاص بالبوت مع أي شخص.</li></ul><div class="note">هذا الدرس يشرح الاتصال الأساسي بين Telegram وn8n. وفي نهاية الصفحة ستجد Workflow كاملًا يبني على هذا الاتصال لمعالجة صور المستندات.</div></section>
+
+            <section class="card" id="steps"><h2>خطوات ربط Telegram مع n8n</h2>
+                <div class="step"><span class="num">1</span><div><h3>ابحث عن BotFather</h3><p>افتح Telegram وابحث عن الحساب الرسمي <span class="code">@BotFather</span>، ثم افتح المحادثة واضغط بدء.</p></div></div>
+                <div class="step"><span class="num">2</span><div><h3>أنشئ بوتًا جديدًا</h3><p>أرسل الأمر <span class="code">/newbot</span>، ثم اختر اسمًا للبوت واسم مستخدم ينتهي عادةً بكلمة <span class="code">bot</span>.</p></div></div>
+                <div class="step"><span class="num">3</span><div><h3>انسخ Access Token</h3><p>بعد نجاح الإنشاء سيعطيك BotFather رمز الوصول. انسخه واحفظه في مكان آمن، ولا تضعه في منشور أو صورة عامة.</p></div></div>
+                <div class="step"><span class="num">4</span><div><h3>أضف Telegram Trigger في n8n</h3><p>أنشئ Workflow جديدًا، ثم أضف عقدة Telegram Trigger واختر حدث استقبال الرسائل <span class="code">On Message</span>.</p></div></div>
+                <div class="step"><span class="num">5</span><div><h3>أضف بيانات الاتصال</h3><p>أنشئ Credential جديدًا داخل العقدة، والصق Access Token في الحقل المخصص ثم احفظ الإعدادات.</p></div></div>
+                <div class="step"><span class="num">6</span><div><h3>اختبر الربط</h3><p>شغّل اختبار العقدة، ثم افتح البوت وأرسل له رسالة. عند نجاح الربط ستظهر بيانات الرسالة داخل n8n.</p></div></div>
+                <div class="note success">عند ظهور الرسالة داخل مخرجات العقدة يكون اتصال Telegram مع n8n قد تم بنجاح.</div>
+            </section>
+
+            <section class="card" id="troubleshooting"><h2>إذا لم تصل الرسالة إلى n8n</h2><ul><li>تأكد أنك أرسلت رسالة إلى نفس البوت الذي أخذت منه Access Token.</li><li>تأكد من حفظ Credential واختياره داخل Telegram Trigger.</li><li>شغّل وضع الاختبار قبل إرسال الرسالة.</li><li>لا تستخدم Access Token قديمًا إذا أنشأت رمزًا جديدًا من BotFather.</li></ul></section>
+
+            <section class="card workflow-box" id="workflow"><h2>طبّق الربط داخل Workflow حقيقي</h2><p>بعد إتمام الربط يمكنك تجربة الـWorkflow المجاني المتوفر على الموقع. يقوم بالعملية التالية:</p><div class="workflow-flow"><div>📷<b>صورة مستند</b></div><div>💬<b>بوت Telegram</b></div><div>🤖<b>استخراج الحقول</b></div><div>📊<b>Google Sheets</b></div></div><p>يرسل المستخدم صورة مستند إلى البوت، ثم يستقبلها n8n ويستخرج الحقول المطلوبة ويضيفها تلقائيًا إلى صف جديد داخل Google Sheets.</p><div class="actions" style="margin:22px 0 0"><a class="btn primary" href="/free-workflows/document-image-to-google-sheets.html">شرح وتحميل الـWorkflow</a></div></section>
+
+            <section class="card faq" id="faq"><h2>أسئلة شائعة</h2><details><summary>ما العقدة المطلوبة لاستقبال الرسائل؟</summary><p>عقدة Telegram Trigger مع اختيار حدث استقبال الرسائل.</p></details><details><summary>هل الربط وحده يستخرج بيانات الصور؟</summary><p>لا. الربط يستقبل الرسالة والملف فقط، ثم تحتاج إلى عقد إضافية لمعالجة الصورة واستخراج البيانات وإرسالها إلى Google Sheets. الـWorkflow المجاني المرفق ينفذ هذه العملية.</p></details><details><summary>هل يمكن تعديل الحقول المستخرجة؟</summary><p>نعم، يمكن تعديل تعليمات الاستخراج وأعمدة Google Sheets لتناسب نوع المستند والبيانات المطلوبة.</p></details></section>
+
+            <section class="card cta"><h2>تحتاج إلى حساب n8n لتطبيق الدرس؟</h2><p>اطّلع على خدمة الاشتراك السنوي والدعم الفني المقدمة من إنجاز للأتمتة.</p><a class="btn primary" href="/services/n8n-annual-subscription/">تفاصيل الاشتراك السنوي</a></section>
+        </article>
+
+        <aside class="toc" aria-label="محتويات الدرس"><h2>محتويات الدرس</h2><a href="#before">قبل أن تبدأ</a><a href="#steps">خطوات الربط</a><a href="#troubleshooting">حل المشكلات</a><a href="#workflow">الـWorkflow التطبيقي</a><a href="#faq">أسئلة شائعة</a></aside>
+    </div>
+</div></main>
+<footer><div class="container">© 2026 إنجاز للأتمتة — Enjaz Automation</div></footer>
+</body></html>
