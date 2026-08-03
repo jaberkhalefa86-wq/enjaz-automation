@@ -9,6 +9,16 @@
       "source": "/services/n8n-annual-subscription/index.html",
       "destination": "/services/n8n-annual-subscription/",
       "permanent": true
+    },
+    {
+      "source": "/learn/index.html",
+      "destination": "/learn/",
+      "permanent": true
+    },
+    {
+      "source": "/learn/connect-telegram-to-n8n/index.html",
+      "destination": "/learn/connect-telegram-to-n8n/",
+      "permanent": true
     }
   ],
   "headers": [
