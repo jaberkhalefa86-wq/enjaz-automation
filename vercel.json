@@ -19,6 +19,11 @@
       "source": "/learn/connect-telegram-to-n8n/index.html",
       "destination": "/learn/connect-telegram-to-n8n/",
       "permanent": true
+    },
+    {
+      "source": "/paid-workflows/invoice-data-extraction/index.html",
+      "destination": "/paid-workflows/invoice-data-extraction/",
+      "permanent": true
     }
   ],
   "headers": [
