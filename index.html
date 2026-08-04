@@ -432,6 +432,19 @@
             border-bottom: 2px solid var(--accent-cyan);
         }
 
+        .workflow-image.has-preview {
+            padding: 12px;
+            background: #080f1c;
+        }
+
+        .workflow-image.has-preview img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
         .workflow-info {
             padding: 30px;
         }
@@ -1213,6 +1226,20 @@
 
             <!-- Paid Workflows -->
             <div id="paid" class="workflow-content active">
+                <article class="workflow-card">
+                    <div class="workflow-image has-preview">
+                        <img src="/assets/invoice-processing-workflow-preview.webp"
+                             alt="ورك فلو n8n متقدم لاستخراج وأرشفة بيانات الفواتير من الصور وملفات PDF"
+                             loading="lazy">
+                    </div>
+                    <div class="workflow-info">
+                        <h3>استخراج وأرشفة بيانات الفواتير</h3>
+                        <p>يستقبل صور الفواتير وملفات PDF عبر Telegram، ويعالج كل فاتورة على حدة، ويحفظها في Google Drive مع بياناتها ورابط مشاهدتها داخل Google Sheets.</p>
+                        <div class="workflow-price">مدفوع — تنفيذ مخصص</div>
+                        <a href="/paid-workflows/invoice-data-extraction/" class="workflow-button">عرض التفاصيل</a>
+                    </div>
+                </article>
+
                 <div class="workflow-card">
                     <div class="workflow-image">📊</div>
                     <div class="workflow-info">
