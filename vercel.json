@@ -16,6 +16,11 @@
       "permanent": true
     },
     {
+      "source": "/learn/build-n8n-workflow-with-ai/index.html",
+      "destination": "/learn/build-n8n-workflow-with-ai/",
+      "permanent": true
+    },
+    {
       "source": "/learn/connect-telegram-to-n8n/index.html",
       "destination": "/learn/connect-telegram-to-n8n/",
       "permanent": true
